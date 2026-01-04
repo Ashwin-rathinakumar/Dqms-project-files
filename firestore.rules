@@ -1,0 +1,24 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    match /queue/{tokenId} {
+      // Anyone logged in can read (to see position) and create (to join queue)
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      
+      // Only the specific Admin email can update status (Call/Pay)
+      allow update: if request.auth.token.email == "kingmakerr2103@gmail.com" || request.auth.token.email == "admin@queue.com";
+      
+      allow delete: if false; // Keep records
+    }
+    
+    match /users/{userId} {
+      allow read, write: if request.auth.uid == userId;
+    }
+  }
+}

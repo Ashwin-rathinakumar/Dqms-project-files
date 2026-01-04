@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Queue Admin Portal</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="container wide">
+
+        <!-- AUTH SECTION -->
+        <div id="auth-view" class="card" style="max-width: 420px; margin: 0 auto;">
+            <h1>Admin Login</h1>
+            <form id="auth-form">
+                <div class="form-group">
+                    <label>Admin Email</label>
+                    <input type="email" id="email" required placeholder="admin@college.edu">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" required placeholder="••••••">
+                </div>
+                <div id="auth-error" class="error-text"></div>
+                <button type="submit" id="auth-btn">Log In</button>
+            </form>
+        </div>
+
+        <!-- DASHBOARD SECTION -->
+        <div id="dashboard-view" class="hidden">
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                <h1>Queue Manager</h1>
+                <button id="logout-btn" class="secondary-btn" style="width:auto">Log Out</button>
+            </div>
+
+            <div class="admin-grid">
+
+                <!-- CURRENTLY WAITING -->
+                <div class="card" style="grid-column: span 1; display:flex; flex-direction:column;">
+                    <h2>Current Queue</h2>
+                    <div class="stat-card" style="margin-bottom:1rem;">
+                        <span class="info-label">Pending Students</span>
+                        <span class="info-value" id="pending-count"
+                            style="font-size:2rem; color: var(--warning)">-</span>
+                    </div>
+
+                    <div id="next-up-container"
+                        style="text-align:center; flex-grow:1; display:flex; flex-direction:column; justify-content:center;">
+                        <p class="info-label">Next Waiting Token</p>
+                        <div class="token-number" style="font-size:3rem" id="next-token">-</div>
+                        <button id="call-next-btn" class="success-btn">📢 Call Next</button>
+                    </div>
+                </div>
+
+                <!-- ACTIVE / CALLED -->
+                <div class="card" style="grid-column: span 1;">
+                    <h2>Currently Serving</h2>
+                    <div id="active-token-container">
+                        <div class="token-display">
+                            <span class="status-badge status-called">CALLED</span>
+                            <div class="token-number" id="active-token">#---</div>
+                            <p id="active-details" style="color:var(--text-muted); margin-bottom:1rem;">-</p>
+
+                            <div class="token-actions">
+                                <button id="mark-paid-btn" class="success-btn">Mark Paid</button>
+                                <button id="no-show-btn" class="danger-btn">No Show</button>
+                            </div>
+                            <!-- Recall Button (Outside flex to stay full width or adjust styling) -->
+                            <button id="recall-btn" class="secondary-btn" style="margin-top:0.5rem">📢 Call
+                                Again</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUEUE LIST -->
+                <div class="card" style="grid-column: span 2;">
+                    <h2>Upcoming Queue</h2>
+                    <div id="queue-list" style="max-height: 400px; overflow-y: auto;">
+                        <p class="text-center" style="color:var(--text-muted)">No students waiting.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module" src="js/firebase-init.js"></script>
+    <script type="module" src="js/admin.js"></script>
+
+</body>
+
+</html>
