@@ -5,14 +5,22 @@ service cloud.firestore {
     function isAuthenticated() {
       return request.auth != null;
     }
+    
+    // Helper function to check if user is an admin
+    function isAdmin() {
+      return request.auth != null && (
+        request.auth.token.email == "kingmakerr2103@gmail.com" ||
+        request.auth.token.email == "admin@test.com"
+      );
+    }
 
     match /queue/{tokenId} {
       // Anyone logged in can read (to see position) and create (to join queue)
       allow read: if isAuthenticated();
       allow create: if isAuthenticated();
       
-      // Only the specific Admin email can update status (Call/Pay)
-      allow update: if request.auth.token.email == "kingmakerr2103@gmail.com" || request.auth.token.email == "admin@queue.com";
+      // Only authorized admin emails can update status (Call/Pay)
+      allow update: if isAdmin();
       
       allow delete: if false; // Keep records
     }
